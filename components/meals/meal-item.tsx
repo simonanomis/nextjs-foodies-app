@@ -6,13 +6,15 @@ import classes from "./meal-item.module.css";
 export interface MealItemProps {
   id: string;
   title: string;
-  mealId: string;
+  slug: string;
   image: string;
+  instructions: string;
   summary: string;
   creator: string;
+  creator_email: string;
 }
 export default function MealItem(props: MealItemProps) {
-  const { title, mealId, image, summary, creator } = props;
+  const { title, slug, image, summary, creator } = props;
   return (
     <article className={classes.meal}>
       <header>
@@ -27,7 +29,7 @@ export default function MealItem(props: MealItemProps) {
       <div className={classes.content}>
         <p className={classes.summary}>{summary}</p>
         <div className={classes.actions}>
-          <Link href={`/meals/${mealId}`}>View Details</Link>
+          <Link href={`/meals/${slug}`}>View Details</Link>
         </div>
       </div>
     </article>

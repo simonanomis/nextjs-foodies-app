@@ -1,12 +1,9 @@
-"use client";
 import classes from "./meals-grid.module.css";
 import MealItem, { MealItemProps } from "@/components/meals/meal-item";
+import { fetchMeals, Meal } from "@/lib/data";
 
-export interface MealsGridProp {
-  meals: MealItemProps[];
-}
-export default function MealsGrid(props: MealsGridProp) {
-  const { meals } = props;
+export default async function MealsGrid() {
+  const meals: Meal[] = await fetchMeals();
   return (
     <ul className={classes.meals}>
       {meals.map((meal) => (

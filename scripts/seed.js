@@ -1,10 +1,65 @@
-const sql = require("better-sqlite3");
-const db = sql("meals.db");
+const { db } = require("@vercel/postgres");
+//const { dummyMeals } = require("../lib/placeholder-data");
+
+async function seedMeals(client) {
+  try {
+    // Create the "meals" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS meals (
+        id UUID PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        slug TEXT NOT NULL UNIQUE,
+        image TEXT NOT NULL,
+        summary TEXT NOT NULL,
+        instructions TEXT NOT NULL,
+        creator VARCHAR(255) NOT NULL,
+        creator_email TEXT NOT NULL
+      );
+    `;
+    console.log(`Created "meals" table`);
+
+    // Insert data into the "meals" table
+    const insertedMeals = await Promise.all(
+      dummyMeals.map(
+        (meal) => client.sql`
+          INSERT INTO meals (id, title, slug, image, summary, instructions, creator, creator_email)
+          VALUES (${meal.id}, ${meal.title}, ${meal.slug}, ${meal.image}, ${meal.summary}, ${meal.instructions}, ${meal.creator}, ${meal.creator_email})
+          ON CONFLICT (id) DO NOTHING;
+        `,
+      ),
+    );
+    console.log(`Seeded ${insertedMeals.length} meals`);
+
+    return {
+      createTable,
+      meals: insertedMeals,
+    };
+  } catch (error) {
+    console.error("Error seeding meals:", error);
+    throw error;
+  }
+}
+
+async function main() {
+  const client = await db.connect();
+
+  await seedMeals(client);
+
+  await client.end();
+}
+
+main().catch((err) => {
+  console.error(
+    "An error occurred while attempting to seed the database:",
+    err,
+  );
+});
 
 const dummyMeals = [
   {
+    id: "410544b2-4001-4271-9855-fec4b6a6442a",
     title: "Juicy Cheese Burger",
-    slug: "juicy-cheese-burger",
+    slug: "1juicy-cheese-burger",
     image: "/images/burger.jpg",
     summary:
       "A mouth-watering burger with a juicy beef patty and melted cheese, served in a soft bun.",
@@ -25,8 +80,9 @@ const dummyMeals = [
     creator_email: "johndoe@example.com",
   },
   {
+    id: "410544b2-4001-4271-9855-fec5b6a6442a",
     title: "Spicy Curry",
-    slug: "spicy-curry",
+    slug: "2spicy-curry",
     image: "/images/curry.jpg",
     summary:
       "A rich and spicy curry, infused with exotic spices and creamy coconut milk.",
@@ -50,8 +106,9 @@ const dummyMeals = [
     creator_email: "max@example.com",
   },
   {
+    id: "410544b2-4001-4271-9855-fec1b6a6442a",
     title: "Homemade Dumplings",
-    slug: "homemade-dumplings",
+    slug: "3homemade-dumplings",
     image: "/images/dumplings.jpg",
     summary:
       "Tender dumplings filled with savory meat and vegetables, steamed to perfection.",
@@ -72,8 +129,9 @@ const dummyMeals = [
     creator_email: "emilychen@example.com",
   },
   {
+    id: "410544b2-4001-4271-9855-fec2b6a6442a",
     title: "Classic Mac n Cheese",
-    slug: "classic-mac-n-cheese",
+    slug: "4classic-mac-n-cheese",
     image: "/images/macncheese.jpg",
     summary:
       "Creamy and cheesy macaroni, a comforting classic that's always a crowd-pleaser.",
@@ -97,8 +155,9 @@ const dummyMeals = [
     creator_email: "laurasmith@example.com",
   },
   {
+    id: "410544b2-4001-4271-9855-fec0b6a6442a",
     title: "Authentic Pizza",
-    slug: "authentic-pizza",
+    slug: "5authentic-pizza",
     image: "/images/pizza.jpg",
     summary:
       "Hand-tossed pizza with a tangy tomato sauce, fresh toppings, and melted cheese.",
@@ -119,8 +178,9 @@ const dummyMeals = [
     creator_email: "mariorossi@example.com",
   },
   {
+    id: "410544b2-4001-4271-9855-fec4b9a6442a",
     title: "Wiener Schnitzel",
-    slug: "wiener-schnitzel",
+    slug: "6wiener-schnitzel",
     image: "/images/schnitzel.jpg",
     summary:
       "Crispy, golden-brown breaded veal cutlet, a classic Austrian dish.",
@@ -141,8 +201,9 @@ const dummyMeals = [
     creator_email: "franzhuber@example.com",
   },
   {
+    id: "110544b2-4001-4271-9855-fec4b6a6442a",
     title: "Fresh Tomato Salad",
-    slug: "fresh-tomato-salad",
+    slug: "7fresh-tomato-salad",
     image: "/images/tomato-salad.jpg",
     summary:
       "A light and refreshing salad with ripe tomatoes, fresh basil, and a tangy vinaigrette.",
@@ -163,39 +224,3 @@ const dummyMeals = [
     creator_email: "sophiagreen@example.com",
   },
 ];
-
-db.prepare(
-  `
-   CREATE TABLE IF NOT EXISTS meals (
-       id INTEGER PRIMARY KEY AUTOINCREMENT,
-       slug TEXT NOT NULL UNIQUE,
-       title TEXT NOT NULL,
-       image TEXT NOT NULL,
-       summary TEXT NOT NULL,
-       instructions TEXT NOT NULL,
-       creator TEXT NOT NULL,
-       creator_email TEXT NOT NULL
-    )
-`,
-).run();
-
-async function initData() {
-  const stmt = db.prepare(`
-      INSERT INTO meals VALUES (
-         null,
-         @slug,
-         @title,
-         @image,
-         @summary,
-         @instructions,
-         @creator,
-         @creator_email
-      )
-   `);
-
-  for (const meal of dummyMeals) {
-    stmt.run(meal);
-  }
-}
-
-initData();

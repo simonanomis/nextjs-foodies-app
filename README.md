@@ -19,16 +19,14 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Install SQLite database
-It is commonly used locally, so we do not have to use complex setup.
+## Deploy you web app to Vercel and Create a Postgres database
 
-`npm install better-sqlite3`
+https://nextjs.org/learn/dashboard-app/setting-up-your-database 
+Mine: https://nextjs-foodies-app.vercel.app/
 
-Then execute initdb.js with
+The script for creating and running the DB is in scripts/seed.js. Run it with
 
-`node initdb.js`
-
-File 'meals.db' will appear in your project, which is your db.
+`npm run seed`
 
 ## Learn More
 

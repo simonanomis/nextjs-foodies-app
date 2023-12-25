@@ -10,7 +10,9 @@
     "seed": "node -r dotenv/config ./scripts/seed.js"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.18.2",
     "@vercel/postgres": "^0.5.1",
+    "antd": "^5.12.5",
     "dotenv": "^16.3.1",
     "next": "14.0.4",
     "react": "^18",

@@ -23,5 +23,21 @@ export async function fetchMeals() {
   }
 }
 
+export async function fetchMealBySlug(slug: string) {
+  noStore(); // Prevent the response from being cached
+  try {
+    const data = await sql<Meal>`SELECT * FROM meals WHERE slug = ${slug}`;
+
+    const meal = data.rows.map((meal) => ({
+      ...meal,
+    }));
+
+    return meal[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch meals.");
+  }
+}
+
 // Additional functions to fetch meals based on certain criteria can be added here
 // For example, fetchMealById, fetchMealsByCreator, etc.

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import classes from "./page.module.css";
-import MealsGrid from "@/components/meals/meals-grid";
+import Meals from "@/components/meals/meals";
+import { Suspense } from "react";
+import { Spin } from "antd";
 
 export default function MealsPage() {
   return (
@@ -18,7 +20,16 @@ export default function MealsPage() {
         </p>
       </header>
       <main className={classes.main}>
-        <MealsGrid />
+        <Suspense
+          fallback={
+            <p className={classes.loading}>
+              <Spin />
+              Fetching meals...
+            </p>
+          }
+        >
+          <Meals />
+        </Suspense>
       </main>
     </>
   );

@@ -1,4 +1,4 @@
-import classes from "./loading.module.css";
+import classes from "./loading-out.module.css";
 import { Spin } from "antd";
 
 export default async function LoadingPage() {

@@ -1,6 +1,7 @@
 import classes from "./page.module.css";
 import Image from "next/image";
 import { fetchMealBySlug } from "@/lib/data";
+import { notFound } from "next/navigation";
 
 export interface MealDetailsPageProps {
   mealId: string;
@@ -12,6 +13,11 @@ export default async function MealDetailsPage({
   params: MealDetailsPageProps;
 }) {
   const meal = await fetchMealBySlug(params.mealId);
+
+  if (!meal) {
+    notFound();
+  }
+
   meal.instructions = meal.instructions.replace(/\n/g, "<br />");
 
   return (

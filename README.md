@@ -53,4 +53,19 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 Delete a record from DB
 DELETE FROM meals WHERE title='test1';
 
+
+## Build the app for production
+
+With running this command we can deploy the app on a server
+
+`npm run build`
+
+Then start the production server with command:
+
+`npm start`
+
+Nextjs uses heavy caching, so it is faster with using pre-generated pages. 
+For this use method revalidatePath(), for example revalidatePath("/meals", "layout") 
+to tell Nextjs to revalidate the cache
+That means that it will validate again the page that is passed as an argument.
 ## Preview app image

@@ -9,6 +9,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "NextLevel Food",
   description: "Delicious meals, shared by a food-loving community.",
+  authors: [
+    { name: "Maximilian Schwarzmüller" },
+    { name: "Simona Ristovska", url: "https://nextjs.org" },
+  ],
+  creator: "Maximilian Schwarzmüller",
 };
 
 export default function RootLayout({

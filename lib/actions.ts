@@ -3,6 +3,7 @@ import { saveMeal } from "@/lib/data";
 import { v4 as uuidv4 } from "uuid"; // UUID library for generating unique IDs
 import slugify from "slugify";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export interface MealMessage {
   message: string | null;
@@ -44,5 +45,6 @@ export async function shareMeal(
     };
   }
   await saveMeal(meal);
+  revalidatePath("/meals", "layout");
   redirect("/meals");
 }

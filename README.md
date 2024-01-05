@@ -69,3 +69,18 @@ For this use method revalidatePath(), for example revalidatePath("/meals", "layo
 to tell Nextjs to revalidate the cache
 That means that it will validate again the page that is passed as an argument.
 ## Preview app image
+
+Home page 
+
+![img_1.png](img_1.png)
+
+Foodies Community
+
+![img_2.png](img_2.png)
+
+Browse meals
+
+![img_4.png](img_4.png)
+
+Share meal
+![img_6.png](img_6.png)
